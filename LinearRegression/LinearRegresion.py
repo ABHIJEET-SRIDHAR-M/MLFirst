@@ -11,6 +11,8 @@ data = pd.read_csv("student-mat.csv", sep=";")
 
 data = data[["G1", "G2", "G3", "studytime", "failures", "absences"]]
 
+# data = data[["G1", "G2", "G3"]]
+
 predict = "G3"
 
 X = np.array(data.drop([predict], 1))
@@ -21,7 +23,7 @@ x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y
 savedModelFile = "studentmodel.pickle"
 
 # Comment start to test pickle
-
+#'''
 best_acc = 0
 for _ in range(30):
     x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y, test_size=0.1)
@@ -33,14 +35,18 @@ for _ in range(30):
     print(acc)
     if acc > best_acc:
         best_acc = acc
-        with open(savedModelFile,"wb") as f:
-            pickle.dump(linear, f)
 
+        with open(savedModelFile, "wb") as f:
+            pickle.dump(linear, f)
+#'''
 # Comment end to test pickle
 
 
 pickle_in = open(savedModelFile, "rb")
 linear = pickle.load(pickle_in)
+
+acc = linear.score(x_test,y_test)
+print(acc)
 
 coeff = linear.coef_
 
@@ -58,4 +64,4 @@ style.use("ggplot")
 pyplot.scatter(data[p], data[predict])
 pyplot.xlabel(p)
 pyplot.ylabel(predict)
-pyplot.show()
+#pyplot.show()
